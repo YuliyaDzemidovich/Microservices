@@ -71,8 +71,6 @@ public class KafkaConfig {
         consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, "microservice-1-consumer");
         consumerProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class);
         consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        // read source topic from the beginning
-        consumerProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         return consumerProps;
     }
 }

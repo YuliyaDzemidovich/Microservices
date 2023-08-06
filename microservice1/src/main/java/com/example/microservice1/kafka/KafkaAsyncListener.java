@@ -2,8 +2,12 @@ package com.example.microservice1.kafka;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
+
+import static com.example.microservice1.Constants.TRACE_ID;
 
 
 @Service
@@ -11,9 +15,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KafkaAsyncListener {
 
-    @KafkaListener(id = "KafkaAsyncListener", topics = "${kafka.default.topic}",
-            autoStartup = "${listen.auto.start:true}", concurrency = "${listen.concurrency:3}")
-    public void listen(String data) {
+    @KafkaListener(
+            id = "microservice-1-consumer",
+            topics = "${kafka.default.topic}",
+            autoStartup = "${listen.auto.start:true}",
+            concurrency = "${listen.concurrency:3}")
+    public void listen(String data, @Header(TRACE_ID) String traceId) {
+        MDC.put(TRACE_ID, traceId);
         log.info("Kafka listener - consumed data: {}", data);
     }
 }
